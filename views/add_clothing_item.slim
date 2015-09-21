@@ -1,19 +1,26 @@
 form action='/add' method="POST" enctype='multipart/form-data'
 
-	label for="clothing_type"
+	label for="clothing_type" Clothing type: 
 	select name="clothing_type"
-		option value="sweater" Sweater
-		option value="button_up" Button-up
-		option value="tshirt" T-shirt
-		option value="tank_top" Tank top
-		option value="shorts" Shorts
-		option value="pants" Pants
-		option value="shoes" Shoes
+		- @types.each do |type|
+			option value="#{type.id}" #{type.name}
 	br
 
 	label for="clothing_description" Description: 
 	input type="text" name="clothing_description"	
 	br
+
+	label for="main_clothing_color" Main color: 
+	select name="main_clothing_color" 
+		- @colors.each do |color|
+			option value="#{color.id}" #{color.name}
+	br
+
+	label for="additional_clothing_colors" Additional colors:
+	br
+	- @colors.each do |color|
+		input type="checkbox" name="additional_clothing_colors[]" value="#{color.id}" #{color.name}
+		br
 
 	/ TODO: Add input for selecting main color
 
