@@ -6,5 +6,7 @@ gem 'sinatra'
 gem 'slim'
 gem 'datamapper'
 gem 'dm-sqlite-adapter'
+gem 'sqlite3'
 
 gem 'rerun'
+gem 'sinatra-flash'
