@@ -1,0 +1,27 @@
+form action='/add' method="POST" enctype='multipart/form-data'
+
+	label for="clothing_type"
+	select name="clothing_type"
+		option value="sweater" Sweater
+		option value="button_up" Button-up
+		option value="tshirt" T-shirt
+		option value="tank_top" Tank top
+		option value="shorts" Shorts
+		option value="pants" Pants
+		option value="shoes" Shoes
+	br
+
+	label for="clothing_description" Description: 
+	input type="text" name="clothing_description"	
+	br
+
+	/ TODO: Add input for selecting main color
+
+	/ TODO: Add input for selecting secondary colors. Have button to "add another color"
+
+	/ TODO: Upload images
+	/ label for="clothing-image" Image: 
+	/ input type="file" name="clothing-image"
+	/ br
+
+	input type="submit" value="Add item!"
