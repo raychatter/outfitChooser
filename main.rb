@@ -12,6 +12,7 @@ class Color
 	include DataMapper::Resource
 	property :id,					Serial
 	property :name,				String, required: true
+	property :neutral,		Boolean, default: false
 	has n, :itemColors, constraint: :destroy
 end
 
@@ -59,6 +60,8 @@ get '/add' do
 end
 
 post '/add' do
+	# TODO: Verify valid input before loading to DB
+	# TODO: Check to make sure success adding to DB, otherwise handle error
 	item = Item.create(description: params[:clothing_description], type_id:params[:clothing_type])
 	item.itemColors.create(main_color: true, color_id: params[:main_clothing_color])
 	params[:additional_clothing_colors].each do |color_id|
@@ -67,3 +70,41 @@ post '/add' do
 	flash[:info] = "Item successfully added."
 	redirect to('/add')
 end
+
+# private
+	def generate_outfit
+		######################################
+		##### PRIMITIVE OUTFIT ALGORITHM #####
+		######################################
+		# 1. Pick a random pair of shoes
+		# 	A. If shoe color is neutral, pick a random top.
+		# 	B. Otherwise, pick a top that contains the main_color of the shoes.
+		# 2. Pick a pair of pants at random that does not contain the main_color of the shirt 
+		top = nil
+		bottom = nil
+		shoe = Item.all(type_id: Type.first(name:"shoes").id).sample
+		main_shoe_color = shoe.itemColors(main_color:true).color.first
+		top_type = Type.all(category_id: Category.first(name:"top").id).sample
+		if(main_shoe_color.neutral)
+			top = Item.all(type_id: top_type.id).sample
+		else
+			# TODO: FIX! This can hang... Maybe timeout?
+			while(top.nil? || top.empty?)
+				top = ItemColor.all(main_color:true, color_id:Color.first(name:"red").id, item_id:Item.all(type_id: top_type.id).sample.id).item
+				top_type = Type.all(category_id: Category.first(name:"top").id).sample
+			end
+		end
+		while(bottom.nil? || bottom.empty?)
+			bottom_type = Type.all(category_id: Category.first(name:"bottom").id).sample
+			puts "BOTTOM TYPE: #{bottom_type.inspect}"
+			random_bottom = Item.all(type_id: bottom_type.id)
+			if(random_bottom.nil? || random_bottom.empty?)
+				puts "RANDOM BOTTOM WAS EMPTY!!!!"
+			end
+			bottom = ItemColor.all(main_color:true, :color.not => top.itemColors(main_color:true).color, item_id: random_bottom.sample.id).item
+			if(bottom.nil? || bottom.empty?)
+				puts "BOTTOM WAS EMPTY!!!!"
+			end
+		end
+		puts "\n***************\nSHOE: #{shoe.inspect}\nTOP: #{top.inspect}\nBOTTOMS: #{bottom.inspect} WITH #{bottom.itemColors(main_color:true).color.inspect}\n***************"
+	end

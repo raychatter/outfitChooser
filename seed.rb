@@ -21,9 +21,15 @@ module Seed
 
 	def self.seed_colors
 		puts "SEEDING: Colors."
-		colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'brown', 'grey', 'pink']
+		puts ".....ADDING: Main colors."
+		colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+		neutral_colors = ['black', 'white', 'brown', 'grey']
 		colors.each do |color|
 			Color.create(name: color)
+		end
+		puts ".....ADDING: Neutral colors."
+		neutral_colors.each do |color|
+			Color.create(name: color, neutral: true)
 		end
 		puts "COMPLETE: Seeding colors."
 	end
@@ -45,7 +51,9 @@ module Seed
 				when 'hat'
 					['hat']
 				when 'top'
-					['jacket', 'hoodie', 'cardigan', 'sweater', 'button-up', 'tshirt', 'tank top']
+					# TODO: Support all later (maybe with weather API?)
+					# ['jacket', 'hoodie', 'cardigan', 'sweater', 'button-up', 'tshirt', 'tank top']
+					['button-up', 'tshirt']
 				when 'bottom'
 					['shorts', 'pants']
 				when 'shoe'
@@ -62,16 +70,23 @@ module Seed
 		puts "SEEDING: Items."
 
 		# Button-ups
-		puts "\tADDING: Button-ups."
+		puts ".....ADDING: Button-ups."
 		self.items_helper("Uniqlo pattern flannel", "button-up", "red")
 
 		# Tshirts
-		puts "\tADDING: Tshirts."
+		puts ".....ADDING: Tshirts."
 		self.items_helper("Binary connect the dots robot", "tshirt", "white", "black")
 		self.items_helper("RepChi logo", "tshirt", "grey", "black", "red")
 
+		# Shorts
+		puts ".....ADDING: Shorts"
+		self.items_helper("Gay pool party", "shorts", "pink")
+		self.items_helper("Topman", "shorts", "blue")
+		self.items_helper("Booty ;)", "shorts", "black")
+		self.items_helper("OG FKA", "shorts", "green")
+		self.items_helper("Denimn", "shorts", "blue")
 		# Pants
-		puts "\tADDING: Pants."
+		puts ".....ADDING: Pants."
 		self.items_helper("Man pants", "pants", "grey")
 		self.items_helper("Man pants", "pants", "red")
 		self.items_helper("Man pants", "pants", "black")
@@ -82,7 +97,7 @@ module Seed
 		self.items_helper("H&M man corduroys", "pants", "brown")
 
 		# Shoes
-		puts "\tADDING: Shoes."
+		puts ".....ADDING: Shoes."
 		self.items_helper("Sambas", "shoes", "black", "white", "brown")
 		self.items_helper("Squishy Adidas", "shoes", "black", "white")
 		self.items_helper("Bicycles!", "shoes", "white", "black")
@@ -94,9 +109,9 @@ module Seed
 
 	def self.items_helper(description, type, main_color, *other_colors)
 		item = Item.create(description: description, type_id: Type.first(name: type).id)
-		item.itemColors.create(main_color: true, color_id: Color.first(name: main_color))
+		item.colorItems.create(main_color: true, color_id: Color.first(name: main_color).id)
 		other_colors.each do |color|
-			item.itemColors.create(main_color: false, color_id: Color.first(name: color))
+			item.colorItems.create(main_color: false, color_id: Color.first(name: color).id)
 		end
 	end
 end
