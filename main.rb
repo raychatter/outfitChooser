@@ -37,6 +37,8 @@ class Item
 	property :description,	String, required: true
 	belongs_to :type
 	has n, :itemColors, constraint: :destroy
+	has n, :colors, through: :itemColors
+	has 1, :category, through: :type
 end
 
 class ItemColor
@@ -82,29 +84,22 @@ end
 		# 2. Pick a pair of pants at random that does not contain the main_color of the shirt 
 		top = nil
 		bottom = nil
-		shoe = Item.all(type_id: Type.first(name:"shoes").id).sample
+		shoe = Item.all(type: {name:"shoes"}).sample
 		main_shoe_color = shoe.itemColors(main_color:true).color.first
-		top_type = Type.all(category_id: Category.first(name:"top").id).sample
+		top_type = Type.all(category: {name:"top"}).sample
 		if(main_shoe_color.neutral)
-			top = Item.all(type_id: top_type.id).sample
+			top = Item.all(type: top_type).sample
 		else
 			# TODO: FIX! This can hang... Maybe timeout?
-			while(top.nil? || top.empty?)
-				top = ItemColor.all(main_color:true, color_id:Color.first(name:"red").id, item_id:Item.all(type_id: top_type.id).sample.id).item
-				top_type = Type.all(category_id: Category.first(name:"top").id).sample
+			while(top.nil?)
+				top = Item.all(type: top_type, itemColors: {main_color:true, color: main_shoe_color}).sample
+				top_type = Type.all(category: {name:"top"}).sample	# GRRR
 			end
 		end
-		while(bottom.nil? || bottom.empty?)
-			bottom_type = Type.all(category_id: Category.first(name:"bottom").id).sample
-			puts "BOTTOM TYPE: #{bottom_type.inspect}"
-			random_bottom = Item.all(type_id: bottom_type.id)
-			if(random_bottom.nil? || random_bottom.empty?)
-				puts "RANDOM BOTTOM WAS EMPTY!!!!"
-			end
-			bottom = ItemColor.all(main_color:true, :color.not => top.itemColors(main_color:true).color, item_id: random_bottom.sample.id).item
-			if(bottom.nil? || bottom.empty?)
-				puts "BOTTOM WAS EMPTY!!!!"
-			end
+		# TODO: FIX! This can hang... Maybe timeout?
+		while(bottom.nil?)
+			bottom_type = Type.all(category: {name:"bottom"}).sample
+			bottom = Item.all(type: bottom_type, itemColors: {main_color:true, :color.not => top.itemColors(main_color:true).color}).sample
 		end
 		puts "\n***************\nSHOE: #{shoe.inspect}\nTOP: #{top.inspect}\nBOTTOMS: #{bottom.inspect} WITH #{bottom.itemColors(main_color:true).color.inspect}\n***************"
 	end

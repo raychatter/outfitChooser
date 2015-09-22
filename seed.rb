@@ -109,9 +109,9 @@ module Seed
 
 	def self.items_helper(description, type, main_color, *other_colors)
 		item = Item.create(description: description, type_id: Type.first(name: type).id)
-		item.colorItems.create(main_color: true, color_id: Color.first(name: main_color).id)
+		item.itemColors.create(main_color: true, color_id: Color.first(name: main_color).id)
 		other_colors.each do |color|
-			item.colorItems.create(main_color: false, color_id: Color.first(name: color).id)
+			item.itemColors.create(main_color: false, color_id: Color.first(name: color).id)
 		end
 	end
 end
