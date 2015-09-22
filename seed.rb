@@ -4,6 +4,7 @@ module Seed
 		self.seed_colors
 		self.seed_categories
 		self.seed_types
+		self.seed_items
 	end
 
 	def self.delete_and_migrate_models
@@ -57,4 +58,45 @@ module Seed
 		puts "COMPLETE: Seeding types."
 	end
 
+	def self.seed_items
+		puts "SEEDING: Items."
+
+		# Button-ups
+		puts "\tADDING: Button-ups."
+		self.items_helper("Uniqlo pattern flannel", "button-up", "red")
+
+		# Tshirts
+		puts "\tADDING: Tshirts."
+		self.items_helper("Binary connect the dots robot", "tshirt", "white", "black")
+		self.items_helper("RepChi logo", "tshirt", "grey", "black", "red")
+
+		# Pants
+		puts "\tADDING: Pants."
+		self.items_helper("Man pants", "pants", "grey")
+		self.items_helper("Man pants", "pants", "red")
+		self.items_helper("Man pants", "pants", "black")
+		self.items_helper("Girl pants", "pants", "red")
+		self.items_helper("Girl khakis", "pants", "brown")
+		self.items_helper("Girl favorite blue pants", "pants", "blue")
+		self.items_helper("Girl pants", "pants", "green")
+		self.items_helper("H&M man corduroys", "pants", "brown")
+
+		# Shoes
+		puts "\tADDING: Shoes."
+		self.items_helper("Sambas", "shoes", "black", "white", "brown")
+		self.items_helper("Squishy Adidas", "shoes", "black", "white")
+		self.items_helper("Bicycles!", "shoes", "white", "black")
+		self.items_helper("Red high tops", "shoes", "red", "blue", "white", "grey", "brown")
+		self.items_helper("Skater", "shoes", "grey", "white")
+
+		puts "COMPLETE: Seeding items."
+	end
+
+	def self.items_helper(description, type, main_color, *other_colors)
+		item = Item.create(description: description, type_id: Type.first(name: type).id)
+		item.itemColors.create(main_color: true, color_id: Color.first(name: main_color))
+		other_colors.each do |color|
+			item.itemColors.create(main_color: false, color_id: Color.first(name: color))
+		end
+	end
 end
