@@ -1,0 +1,11 @@
+#main-left-div {
+	float: left;
+	width: 400px;
+	height: 500px;
+}
+
+#main-right-div {
+	margin-left: 400px;
+	width: 400px;
+	height: 500px;
+}

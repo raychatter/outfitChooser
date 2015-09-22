@@ -55,6 +55,12 @@ get '/' do
 	slim :index
 end
 
+post '/' do
+	@top, @bottom, @shoe = generate_outfit
+	puts "\n***************\nTOP:#{@top.inspect}\n***************\n"
+	slim :index
+end
+
 get '/add' do
 	@types = Type.all
 	@colors = Color.all
@@ -101,5 +107,7 @@ end
 			bottom_type = Type.all(category: {name:"bottom"}).sample
 			bottom = Item.all(type: bottom_type, itemColors: {main_color:true, :color.not => top.itemColors(main_color:true).color}).sample
 		end
-		puts "\n***************\nSHOE: #{shoe.inspect}\nTOP: #{top.inspect}\nBOTTOMS: #{bottom.inspect} WITH #{bottom.itemColors(main_color:true).color.inspect}\n***************"
+
+		return top, bottom, shoe
+		# puts "\n***************\nSHOE: #{shoe.inspect}\nTOP: #{top.inspect}\nBOTTOMS: #{bottom.inspect} WITH #{bottom.itemColors(main_color:true).color.inspect}\n***************"
 	end

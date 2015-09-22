@@ -1,7 +1,53 @@
-h1 Clothes Picker
+div id='header' 
+	h1 Clothes Picker
 
-div Press the button for the best outfit choice!
+div id='main-left-div' 
+	| Press the button for the best outfit choice!
+	br
+	form action='/' method="POST"
+		input type="submit" id="outfit-pick-button" value="Generate Outfit!"
 
-br
-
-button id="outfit-pick-button" Generate Outfit!
+div id='main-right-div'
+	h3 Outfit result:
+	div id='top'
+		b Top:
+		br
+		- unless(@top.nil?)
+			= @top.type.name
+			br
+			= @top.description
+			br
+			b
+				= @top.itemColors(main_color:true).first.color.name.capitalize
+			br
+			- @top.itemColors(main_color:false).each do |item_color|
+				= item_color.color.name.capitalize
+				br
+	div id='bottom'
+		b Bottom:
+		br
+		- unless(@bottom.nil?)
+			= @bottom.type.name
+			br
+			= @bottom.description
+			br
+			b
+				= @bottom.itemColors(main_color:true).first.color.name.capitalize
+			br
+			- @bottom.itemColors(main_color:false).each do |item_color|
+				= item_color.color.name.capitalize
+				br
+	div id='shoes'
+		b Shoes:
+		br
+		- unless(@shoe.nil?)
+			= @shoe.type.name
+			br
+			= @shoe.description
+			br
+			b
+				= @shoe.itemColors(main_color:true).first.color.name.capitalize
+			br
+			- @shoe.itemColors(main_color:false).each do |item_color|
+				= item_color.color.name.capitalize
+				br
