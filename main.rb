@@ -39,6 +39,10 @@ class Item
 	has n, :itemColors, constraint: :destroy
 	has n, :colors, through: :itemColors
 	has 1, :category, through: :type
+
+	def get_colors(main_color)
+		return self.itemColors(main_color: main_color)
+	end
 end
 
 class ItemColor
@@ -50,6 +54,7 @@ class ItemColor
 end
 
 DataMapper.finalize
+Seed.reset_all
 
 get '/' do
 	slim :index
@@ -57,7 +62,6 @@ end
 
 post '/' do
 	@top, @bottom, @shoe = generate_outfit
-	puts "\n***************\nTOP:#{@top.inspect}\n***************\n"
 	slim :index
 end
 
@@ -108,6 +112,11 @@ end
 			bottom = Item.all(type: bottom_type, itemColors: {main_color:true, :color.not => top.itemColors(main_color:true).color}).sample
 		end
 
-		return top, bottom, shoe
-		# puts "\n***************\nSHOE: #{shoe.inspect}\nTOP: #{top.inspect}\nBOTTOMS: #{bottom.inspect} WITH #{bottom.itemColors(main_color:true).color.inspect}\n***************"
+		return generate_item_hash(top), generate_item_hash(bottom), generate_item_hash(shoe)
+	end
+
+	def generate_item_hash(item)
+		unless(item.nil?)
+			return {obj: item, main_color: item.get_colors(true).first.color, other_colors: item.get_colors(false)}
+		end
 	end

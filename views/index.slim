@@ -6,48 +6,56 @@ div id='main-left-div'
 	br
 	form action='/' method="POST"
 		input type="submit" id="outfit-pick-button" value="Generate Outfit!"
-
+	div id="outfit-result"
+		h3 Outfit result:
+		div id='top-result' class='result'
+			b Top:
+			br
+			- unless(@top.nil?)
+				= @top[:obj].type.name
+				br
+				= @top[:obj].description
+				br
+				span id='top-main-color'
+					= @top[:main_color].name.capitalize
+				br
+				- @top[:other_colors].each do |item_color|
+					= item_color.color.name.capitalize
+					br
+		div id='bottom-result' class='result'
+			b Bottom:
+			br
+			- unless(@bottom.nil?)
+				= @bottom[:obj].type.name
+				br
+				= @bottom[:obj].description
+				br
+				span id='bottom-main-color'
+					= @bottom[:main_color].name.capitalize
+				br
+				- @bottom[:other_colors].each do |item_color|
+					= item_color.color.name.capitalize
+					br
+		div id='shoes-result' class='result'
+			b Shoes:
+			br
+			- unless(@shoe.nil?)
+				= @shoe[:obj].type.name
+				br
+				= @shoe[:obj].description
+				br
+				span id='shoe-main-color'
+					= @shoe[:main_color].name.capitalize
+				br
+				- @shoe[:other_colors].each do |item_color|
+					= item_color.color.name.capitalize
+					br
 div id='main-right-div'
-	h3 Outfit result:
-	div id='top'
-		b Top:
-		br
-		- unless(@top.nil?)
-			= @top.type.name
-			br
-			= @top.description
-			br
-			b
-				= @top.itemColors(main_color:true).first.color.name.capitalize
-			br
-			- @top.itemColors(main_color:false).each do |item_color|
-				= item_color.color.name.capitalize
-				br
-	div id='bottom'
-		b Bottom:
-		br
-		- unless(@bottom.nil?)
-			= @bottom.type.name
-			br
-			= @bottom.description
-			br
-			b
-				= @bottom.itemColors(main_color:true).first.color.name.capitalize
-			br
-			- @bottom.itemColors(main_color:false).each do |item_color|
-				= item_color.color.name.capitalize
-				br
-	div id='shoes'
-		b Shoes:
-		br
-		- unless(@shoe.nil?)
-			= @shoe.type.name
-			br
-			= @shoe.description
-			br
-			b
-				= @shoe.itemColors(main_color:true).first.color.name.capitalize
-			br
-			- @shoe.itemColors(main_color:false).each do |item_color|
-				= item_color.color.name.capitalize
-				br
+	div id='top' class='outfit'
+		object id="top-image" type="image/svg+xml" data="top.svg"
+	
+	div id='bottom' class='outfit'
+		object id="bottom-image" type="image/svg+xml" data="pants.svg"
+		
+	div id='shoes' class='outfit'
+		

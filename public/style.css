@@ -1,3 +1,9 @@
+.outfit {
+	width: 400px;
+	text-align: center;
+	margin: 0 auto;
+}
+
 #main-left-div {
 	float: left;
 	width: 400px;
@@ -8,4 +14,22 @@
 	margin-left: 400px;
 	width: 400px;
 	height: 500px;
+}
+
+#top-image {
+	width: 320px;
+	margin: 0 auto;
+}
+
+#top-stroke {
+	stroke: 25px;
+}
+
+#bottom-image {
+	width: 400px;
+	margin: 0 auto;
+}
+
+.result {
+	margin-bottom: 5px;
 }
