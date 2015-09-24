@@ -16,7 +16,7 @@ div id='main-left-div'
 				br
 				= @top[:obj].description
 				br
-				span id='top-main-color'
+				span id='top-main-color' class='main-color'
 					= @top[:main_color].name.capitalize
 				br
 				- @top[:other_colors].each do |item_color|
@@ -30,7 +30,7 @@ div id='main-left-div'
 				br
 				= @bottom[:obj].description
 				br
-				span id='bottom-main-color'
+				span id='bottom-main-color' class='main-color'
 					= @bottom[:main_color].name.capitalize
 				br
 				- @bottom[:other_colors].each do |item_color|
@@ -44,7 +44,7 @@ div id='main-left-div'
 				br
 				= @shoe[:obj].description
 				br
-				span id='shoe-main-color'
+				span id='shoe-main-color' class='main-color'
 					= @shoe[:main_color].name.capitalize
 				br
 				- @shoe[:other_colors].each do |item_color|

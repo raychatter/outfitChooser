@@ -42,5 +42,9 @@
 }
 
 .result {
-	margin-bottom: 5px;
+	margin-bottom: 10px;
+}
+
+.main-color {
+	font-weight: bold;
 }
