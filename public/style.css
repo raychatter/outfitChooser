@@ -30,6 +30,17 @@
 	margin: 0 auto;
 }
 
+#shoe-image-left {
+	width: 175px;
+	margin: 0 auto;
+}
+
+#shoe-image-right {
+	width: 175px;
+	margin: 0 auto;
+	transform: scaleX(-1);
+}
+
 .result {
 	margin-bottom: 5px;
 }
